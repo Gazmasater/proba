@@ -11,15 +11,12 @@ services:
       - my-network
 
   swagger-ui:
-    build:
-      context: .
-      dockerfile: Dockerfile.Swagger
+    image: swaggerapi/swagger-ui # Используем официальный образ Swagger UI
     ports:
       - "8081:8080" # Swagger UI доступен на порту 8081
-    environment:
-      - SWAGGER_JSON=/swagger.json
+
     volumes:
-      - ./docs:/usr/share/nginx/html
+      - ./docs:/usr/share/nginx/html # Монтируем локальную папку с документом
     networks:
       - my-network
 

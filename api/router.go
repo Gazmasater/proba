@@ -1,5 +1,4 @@
-// router.go
-package main
+package api
 
 import (
 	"fmt"

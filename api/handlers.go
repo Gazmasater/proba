@@ -1,10 +1,14 @@
-// handler.go
-package main
+package api
 
 import (
 	"fmt"
 	"net/http"
 )
+
+type ResponseError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
 
 // HandleTest1 обрабатывает POST-запросы по пути /test1
 // @Summary Handle POST requests at /test1

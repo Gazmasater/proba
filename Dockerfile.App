@@ -1,33 +1,36 @@
-# Stage 1: Build the Go binary
-FROM golang:1.22.2 AS builder
+# Используем официальный образ Go в качестве базового
+FROM golang:1.22 AS builder
 
-# Set the working directory
+# Устанавливаем рабочий каталог
 WORKDIR /app
 
-# Copy go.mod and go.sum and download dependencies
+# Копируем go.mod и go.sum и загружаем зависимости
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy the rest of the source code
-COPY . .
+# Устанавливаем swag CLI
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 
-# Build the Go binary
+# Копируем исходный код и генерируем документацию с помощью swag
+COPY . .
+RUN swag init
+
+# Собираем приложение
 RUN go build -o main .
 
-# Stage 2: Create a minimal image to run the Go binary
-FROM alpine:latest
+# Используем более актуальный образ Ubuntu для выполнения приложения
+FROM ubuntu:22.04
 
-# Install necessary runtime dependencies including gcompat for glibc compatibility
-RUN apk --no-cache add ca-certificates gcompat
-
-# Set the working directory
+# Устанавливаем рабочий каталог
 WORKDIR /app
 
-# Copy the Go binary from the builder stage
 COPY --from=builder /app/main .
+COPY --from=builder /app/docs ./docs
 
-# Expose the application's port
-EXPOSE 8080
+# Устанавливаем необходимые зависимости
+RUN apt-get update && apt-get install -y libc6
 
-# Run the Go binary
+
+
+# Запускаем приложение
 CMD ["./main"]

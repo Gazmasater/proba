@@ -5,14 +5,15 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Gazmasater/api"
 	"github.com/Gazmasater/docs"
 )
 
 func main() {
 	// Создаем новый маршрутизатор
-	r := NewRouter()
+	r := api.NewRouter()
 
-	docs.SwaggerInfo.Title = "API MICROSERV"
+	docs.SwaggerInfo.Title = "API TEST"
 	docs.SwaggerInfo.Description = "Это пример API для отправки сообщений."
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost:8080"
