@@ -1,0 +1,29 @@
+definitions:
+  main.ResponseError:
+    properties:
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /test1:
+    post:
+      consumes:
+      - application/json
+      description: Returns "привет Лев" for POST requests to /test1
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: привет Лев
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            $ref: '#/definitions/main.ResponseError'
+      summary: Handle POST requests at /test1
+      tags:
+      - test
+swagger: "2.0"
